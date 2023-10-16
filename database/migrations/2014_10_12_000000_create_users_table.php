@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('nickname', 255);
             $table->string('mail', 255);
             $table->string('password', 255);
-            $table->string('phone_number', 20);
-            $table->string('profile_picture', 30);
-            $table->string('profile_type', 13);
+            $table->string('phone_number', 20)->nullable();;
+            $table->string('profile_picture', 30)->nullable();
+            $table->string('profile_type', 13)->nullable();
         });
     }
 
