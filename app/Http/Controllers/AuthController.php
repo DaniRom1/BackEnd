@@ -9,35 +9,36 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    function Register(Request $R){
-        try{
-            $cred = new User();
-            $cred->nickname = $R->nickname;
-            $cred->mail = $R->mail;
-            $cred->password = Hash::make($R->password);
-            $cred->save();
-            $response = ['status'=>200,'message'=>'Register Successfully'];
-            return response()->json($response);
+    public function register(Request $request)
+    {
+        try {
+            $user = new User();
+            $user->nickname = $request->nickname;
+            $user->mail = $request->mail;
+            $user->password = Hash::make($request->password);
+            $user->save();
 
-        }catch(Exception $e){
-            $response = ['status'=>500,'message'=>$e];
-        }
-    }
-
-    function Login (Request $R){
-        $user = User::where('mail',$R->mail)->first();
-
-        if($user!='[]' && Hash::check($R->password,$user->password)){
-            $token=$user->createToken('PersonalAccesToken')->plainTextToken;
-            $response=['status'=>200,'token'=>$token,'user'=>$user,'mesage'=>'Successfully Login'];
+            $response = ['status' => 200, 'message' => 'Register Successfully'];
             return response()->json($response);
-        }else if($user=='[]'){
-            $response = ['status'=>500,'message'=>'No account found with this email'];
-            return response()->json($response);
-        }else{
-            $response = ['status'=>500,'message'=>'Wrong email or password'];
+        } catch (Exception $e) {
+            $response = ['status' => 500, 'message' => $e->getMessage()];
             return response()->json($response);
         }
     }
 
+    public function login(Request $request)
+    {
+        $user = User::where('mail', $request->mail)->first();
+
+        if (!is_null($user) && Hash::check($request->password, $user->password)) {
+            $token = $user->createToken('PersonalAccessToken')->plainTextToken;
+            $response = ['status' => 200, 'token' => $token, 'user' => $user, 'message' => 'Successfully Login'];
+        } elseif (is_null($user)) {
+            $response = ['status' => 500, 'message' => 'No account found with this email'];
+        } else {
+            $response = ['status' => 500, 'message' => 'Wrong email or password'];
+        }
+
+        return response()->json($response);
+    }
 }
