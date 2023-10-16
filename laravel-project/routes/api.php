@@ -3,6 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/register', [RestifyAuthController::class, 'register']);
+Route::post('/login', [RestifyAuthController::class, 'login']);
+Route::post('/restify/forgotPassword', [RestifyAuthController::class, 'forgotPassword']);
+Route::post('/restify/resetPassword', [RestifyAuthController::class, 'resetPassword']);
+Route::post('/restify/verify/{id}/{emailHash}', [RestifyAuthController::class, 'verifyEmail']);
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
