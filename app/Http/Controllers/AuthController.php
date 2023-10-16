@@ -16,6 +16,9 @@ class AuthController extends Controller
             $user->nickname = $request->nickname;
             $user->mail = $request->mail;
             $user->password = Hash::make($request->password);
+            $user->phone_number = $request->phone_number;
+            $user->profile_picture = $request->profile_picture;
+            $user->profile_type = "Usuario";
             $user->save();
 
             $response = ['status' => 200, 'message' => 'Register Successfully'];
