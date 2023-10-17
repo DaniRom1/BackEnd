@@ -11,22 +11,27 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        try {
-            $user = new User();
-            $user->nickname = $request->nickname;
-            $user->mail = $request->mail;
-            $user->password = Hash::make($request->password);
-            $user->phone_number = $request->phone_number;
-            $user->profile_picture = $request->profile_picture;
-            $user->profile_type = "Usuario";
-            $user->save();
 
+        $user = new User();
+        $user->nickname = $request->nickname;
+        $user->mail = $request->mail;
+        $user->password = Hash::make($request->password);
+        $user->phone_number = $request->phone_number;
+        $user->profile_picture = $request->profile_picture;
+        $user->profile_type = "Usuario";
+
+        if ($user->profile_picture == null)
+        $user->profile_picture = "user-default.jpg";
+
+        try {
+            $user->save();
             $response = ['status' => 200, 'message' => 'Register Successfully'];
-            return response()->json($response);
         } catch (Exception $e) {
-            $response = ['status' => 500, 'message' => 'Usuario existente'];//$e->getMessage()];
-            return response()->json($response);
+            $response = ['status' => 500, 'message' => 'Usuario existente']; //$e->getMessage()];
         }
+
+        return response()->json($response);
+
     }
 
     public function login(Request $request)
