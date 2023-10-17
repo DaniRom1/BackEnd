@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register',[AuthController::class,'Register']);
 Route::post('/login',[AuthController::class,'Login']);
+Route::post('/list',[AuthController::class,'List']);
 //Route::restifyAuth();
