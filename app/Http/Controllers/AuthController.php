@@ -24,7 +24,7 @@ class AuthController extends Controller
             $response = ['status' => 200, 'message' => 'Register Successfully'];
             return response()->json($response);
         } catch (Exception $e) {
-            $response = ['status' => 500, 'message' => $e->getMessage()];
+            $response = ['status' => 500, 'message' => 'Usuario existente'];//$e->getMessage()];
             return response()->json($response);
         }
     }
