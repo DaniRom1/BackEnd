@@ -45,14 +45,8 @@ class AuthController extends Controller
         } else {
             $response = ['status' => 500, 'message' => 'Wrong email or password'];
         }
-
+        
         return response()->json($response);
-    }
-
-    public function list()
-    {
-        $users = User::all();
-        return response()->json("users");
     }
 
 }

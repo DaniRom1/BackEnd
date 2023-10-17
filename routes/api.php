@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AnnounceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register',[AuthController::class,'Register']);
-Route::post('/login',[AuthController::class,'Login']);
-Route::post('/list',[AuthController::class,'List']);
+Route::post('/register',[AuthController::class,'register']);
+Route::post('/login',[AuthController::class,'login']);
+Route::post('/boat-list',[AnnounceController::class,'list']);
 //Route::restifyAuth();
