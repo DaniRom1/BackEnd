@@ -11,7 +11,6 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-
         $user = new User();
         $user->nickname = $request->nickname;
         $user->mail = $request->mail;
@@ -31,12 +30,12 @@ class AuthController extends Controller
         }
 
         return response()->json($response);
-
     }
 
     public function login(Request $request)
     {
         $user = User::where('mail', $request->mail)->first();
+        info($request);
 
         if (!is_null($user) && Hash::check($request->password, $user->password)) {
             $token = $user->createToken('PersonalAccessToken')->plainTextToken;
