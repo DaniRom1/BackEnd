@@ -44,4 +44,19 @@ class AnnounceController extends Controller
         return response()->json($response);
     }
 
+    public function delete(Request $request)
+    {
+        $ID_announce = $request->ID_announce;
+
+        try{
+            $announce = Announce::findOrFail($ID_announce);
+            $announce->delete();
+            $response = ['status'=> 200, 'message'=> 'Anuncio eliminado'];
+        } catch(Exception $e){
+            $response = ['status'=> 500, 'message'=> $e->getMessage()];
+        }
+
+        return response()->json($response);
+    }
+
 }
