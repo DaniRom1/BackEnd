@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('available');
             $table->date('date_announce')->default(now());
             $table->string('type', 5);
-            $table->date('year');
+            $table->integer('year');
             $table->float('length');
             $table->float('width');
             $table->integer('power');
