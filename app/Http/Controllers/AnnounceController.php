@@ -17,7 +17,6 @@ class AnnounceController extends Controller
 
     public function create(Request $request)
     {
-
         $announce = new Announce();
         $announce->title = $request->title;
         $announce->price = $request->price;
@@ -43,7 +42,6 @@ class AnnounceController extends Controller
         }
 
         return response()->json($response);
-        
     }
 
 }

@@ -21,9 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route::post('/register',[AuthController::class,'register']);
 //Route::post('/login',[AuthController::class,'login']);
-//Route::post('/boat-list',[AnnounceController::class,'list']);
+Route::get('/boat-list',[AnnounceController::class,'list']);
 // Route::restifyAuth();
-Route::post('/announce-post', [AnnounceController::class,'create']);
+Route::post('/create-announce', [AnnounceController::class,'create']);
 
 Route::post('login', \App\Http\Controllers\Restify\Auth\LoginController::class)
     ->middleware('throttle:6,1')
