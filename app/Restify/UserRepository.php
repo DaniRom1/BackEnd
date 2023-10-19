@@ -7,6 +7,10 @@ use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
 class UserRepository extends Repository
 {
+
+    public static array $search = ['nickname', 'email'];
+
+
     public static string $model = User::class;
 
     public function fields(RestifyRequest $request): array
@@ -18,9 +22,11 @@ class UserRepository extends Repository
             field('email')->storingRules('required', 'unique:users')->messages([
                 'required' => 'This field is required.',
             ]),
+            field('phone_number'),
             field('profile_picture'),
             field('profile_type'),
-
         ];
     }
+
+    
 }

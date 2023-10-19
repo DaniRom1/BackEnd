@@ -5,6 +5,7 @@ namespace App\Restify;
 use App\Models\Announce;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
+
 class AnnounceRepository extends Repository
 {
     public static string $model = Announce::class;
@@ -30,4 +31,7 @@ class AnnounceRepository extends Repository
             field('ID_user'),
         ];
     }
+
+    
+
 }
