@@ -12,7 +12,11 @@ class ChatRepository extends Repository
     public function fields(RestifyRequest $request): array
     {
         return [
-            id(),
+            field('ID_message'),
+            field('date_message'),
+            field('message_content'),
+            field('ID_from'),
+            field('ID_to'),
         ];
     }
 }

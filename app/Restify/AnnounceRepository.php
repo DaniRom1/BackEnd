@@ -12,7 +12,22 @@ class AnnounceRepository extends Repository
     public function fields(RestifyRequest $request): array
     {
         return [
-            id(),
+            field('ID_announce'),
+            field('title'),
+            field('price'),
+            field('description'),
+            field('available'),
+            field('date_announce'),
+            field('type'),
+            field('year'),
+            field('length'),
+            field('width'),
+            field('power'),
+            field('engines'),
+            field('fuel'),
+            field('flag'),
+            field('ID_location'),
+            field('ID_user'),
         ];
     }
 }

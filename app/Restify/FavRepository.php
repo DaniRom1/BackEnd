@@ -12,7 +12,9 @@ class FavRepository extends Repository
     public function fields(RestifyRequest $request): array
     {
         return [
-            id(),
+            field('ID_fav'),
+            field('ID_announce'),
+            field('ID_user'),
         ];
     }
 }

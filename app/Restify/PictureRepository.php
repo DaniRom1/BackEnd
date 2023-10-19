@@ -12,7 +12,9 @@ class PictureRepository extends Repository
     public function fields(RestifyRequest $request): array
     {
         return [
-            id(),
+            field('ID_picture'),
+            field('img'),
+            field('ID_announce'),
         ];
     }
 }
