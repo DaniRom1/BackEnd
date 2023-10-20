@@ -8,11 +8,11 @@ use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 use Binaryk\LaravelRestify\Filters\AdvancedFilter;
 
 
-class CustomTitleSearchFilter extends SearchableFilter
+class CustomAnnounceSearchFilter extends SearchableFilter
 {
     public function filter(RestifyRequest $request, $query, $value)
     {
-        $query->where('title', 'like', '%' . $value . '%');
+        $query->where('ID_announce',  $value);
         $announces = $query->get();
         return response()->json($announces);
     }
@@ -27,7 +27,7 @@ class AnnounceRepository extends Repository
     public static function searchables(): array
     {
         return [
-            'title' => CustomTitleSearchFilter::make(),
+            'title' => CustomAnnounceSearchFilter::make(),
         ];
     }
 

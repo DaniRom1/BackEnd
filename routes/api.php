@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AnnounceController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,11 @@ Route::get('/boat-list',[AnnounceController::class,'list']);
 Route::post('/create-announce', [AnnounceController::class,'create']);
 Route::post('/delete-announce', [AnnounceController::class,'delete']);
 Route::get('/boat-filterlist',[AnnounceController::class,'filterlist']);
-Route::post('/announce',[AnnounceController::class,'announce']);
+Route::get('/announce',[AnnounceController::class,'announce']);
+
+Route::get('/user-list',[UserController::class,'list']);
+Route::post('/delete-user', [UserController::class,'delete']);
+Route::get('/user',[UserController::class,'user']);
 
 Route::post('login', \App\Http\Controllers\Restify\Auth\LoginController::class)
     ->middleware('throttle:6,1')

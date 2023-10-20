@@ -118,13 +118,15 @@ class AnnounceController extends Controller
         $announce = Announce::find($ID_announce);
 
         $user = User::find($announce->ID_user);
+        $location = Location::find($announce->ID_location);
 
-        $announceUser = [
+        $announceUserLoc = [
             'announce' => $announce,
-            'user' => $user
+            'user' => $user,
+            'location' => $location,
         ];
 
-        return response()->json($announceUser);
+        return response()->json($announceUserLoc);
         
         /*
         $jsonResponse = response()->json($announceUser);
