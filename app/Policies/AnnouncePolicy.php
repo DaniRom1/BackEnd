@@ -32,7 +32,7 @@ class AnnouncePolicy
 
     public function update(User $user, Announce $model): bool
     {
-        return false;
+        return true;
     }
 
     public function updateBulk(User $user, Announce $model): bool
@@ -47,6 +47,6 @@ class AnnouncePolicy
 
     public function delete(User $user, Announce $model): bool
     {
-        return false;
+        return true;
     }
 }
