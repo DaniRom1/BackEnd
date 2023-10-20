@@ -4,7 +4,6 @@ namespace App\Restify;
 
 use App\Models\Fav;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
-use App\Models\User;
 use App\Models\Announce;
 use Illuminate\Http\Request;
 
@@ -24,7 +23,7 @@ class FavRepository extends Repository
     //GET: /api/restify/announces/ID_announce
     public function show(Request $request, $ID_user)
     {
-        $fav = Announce::findOrFail($ID_user);
+        $fav = Fav::where('ID_user', $ID_user)->get();
         return response()->json($fav);
     }
 
@@ -44,7 +43,7 @@ class FavRepository extends Repository
         ]);
 
         $data = $request->all();
-        $fav = Announce::create($data);
+        $fav = Fav::create($data);
         return response()->json($fav);
         //$announce->save();
     }

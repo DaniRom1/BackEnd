@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Fav extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'ID_announce',
+        'ID_user',
+    ];
 }
