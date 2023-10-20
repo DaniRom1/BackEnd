@@ -22,7 +22,7 @@ class AnnouncePolicy
 
     public function store(User $user): bool
     {
-        return false;
+        return true;
     }
 
     public function storeBulk(User $user): bool

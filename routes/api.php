@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/boat-list',[AnnounceController::class,'list']);
 Route::post('/create-announce', [AnnounceController::class,'create']);
 Route::post('/delete-announce', [AnnounceController::class,'delete']);
-Route::post('/boat-filterlist',[AnnounceController::class,'filterlist']);
+Route::get('/boat-filterlist',[AnnounceController::class,'filterlist']);
 Route::post('/announce',[AnnounceController::class,'announce']);
 
 Route::post('login', \App\Http\Controllers\Restify\Auth\LoginController::class)

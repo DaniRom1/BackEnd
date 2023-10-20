@@ -3,12 +3,33 @@
 namespace App\Restify;
 
 use App\Models\Announce;
+use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
+use Binaryk\LaravelRestify\Filters\AdvancedFilter;
 
+
+class CustomTitleSearchFilter extends SearchableFilter
+{
+    public function filter(RestifyRequest $request, $query, $value)
+    {
+        $query->where('title', 'like', '%' . $value . '%');
+        $announces = $query->get();
+        return response()->json($announces);
+    }
+}
 
 class AnnounceRepository extends Repository
 {
     public static string $model = Announce::class;
+
+    //public static array $search = ['title'];
+
+    public static function searchables(): array
+    {
+        return [
+            'title' => CustomTitleSearchFilter::make(),
+        ];
+    }
 
     public function fields(RestifyRequest $request): array
     {
@@ -33,5 +54,22 @@ class AnnounceRepository extends Repository
     }
 
     
+
+    /*
+    public function store(RestifyRequest $request): void
+    {
+        $announce = Announce::create($request->validated());
+        $announce->save();
+    }
+
+
+    public function filters(RestifyRequest $request): array
+    {
+        return [
+            AnnounceFilter::new(),
+        ];
+    }*/
+
+
 
 }

@@ -131,7 +131,7 @@ return [
         /*
         | Specify either the search should be case-sensitive or not.
         */
-        'case_sensitive' => true,
+        'case_sensitive' => false,
     ],
 
     'repositories' => [
