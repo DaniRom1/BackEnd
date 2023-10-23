@@ -3,11 +3,9 @@
 namespace App\Restify;
 
 use App\Models\Chat;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
-use Binaryk\LaravelRestify\Filters\AdvancedFilter;
+
 
 class ChatRepository extends Repository
 {

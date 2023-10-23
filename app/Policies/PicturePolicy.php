@@ -22,7 +22,7 @@ class PicturePolicy
 
     public function store(User $user): bool
     {
-        return false;
+        return true;
     }
 
     public function storeBulk(User $user): bool
@@ -32,7 +32,7 @@ class PicturePolicy
 
     public function update(User $user, Picture $model): bool
     {
-        return false;
+        return true;
     }
 
     public function updateBulk(User $user, Picture $model): bool
@@ -47,6 +47,6 @@ class PicturePolicy
 
     public function delete(User $user, Picture $model): bool
     {
-        return false;
+        return true;
     }
 }

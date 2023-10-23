@@ -3,14 +3,32 @@
 namespace App\Restify;
 
 use App\Models\Fav;
-use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
-use App\Models\Announce;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Binaryk\LaravelRestify\Filters\SearchableFilter;
+use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
+
+// GET: /api/restify/favs Archivo JSON: "search":ID_user
+class CustomFavsSearchFilter extends SearchableFilter
+{
+    public function filter(RestifyRequest $request, $query, $value)
+    {
+        $query->where('ID_user', $value);
+        $query->orderBy('ID_announce','desc');
+        $announces = $query->get();
+        return response()->json($announces);
+    }
+}
 
 class FavRepository extends Repository
 {
     public static string $model = Fav::class;
+
+    public static function searchables(): array
+    {
+        return [
+            'announce' => CustomFavsSearchFilter::make(),
+        ];
+    }
 
     public function fields(RestifyRequest $request): array
     {
@@ -22,11 +40,13 @@ class FavRepository extends Repository
     }
 
     //GET: /api/restify/favs/ID_user
+    /*
     public function show(Request $request, $ID_user)
     {
         $fav = Fav::where('ID_user', $ID_user)->get();
         return response()->json($fav);
     }
+    */
 
     //DELETE: /api/restify/favs/ID_fav No funciona con JSON
     public function destroy(Request $request, $ID_fav)

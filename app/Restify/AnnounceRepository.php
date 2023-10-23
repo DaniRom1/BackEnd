@@ -2,11 +2,10 @@
 
 namespace App\Restify;
 
-use Illuminate\Http\Request;
 use App\Models\Announce;
+use Illuminate\Http\Request;
 use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
-
 
 
 // GET: /api/restify/announces Archivo JSON: "search":ID_user

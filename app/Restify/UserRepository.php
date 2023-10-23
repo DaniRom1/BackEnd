@@ -29,7 +29,7 @@ class UserRepository extends Repository
         ];
     }
 
-    //PATCH: /api/restify/announces/ID_announce Fichero JSON con cambios
+    //PATCH: /api/restify/users/ID_user Fichero JSON con cambios
     public function update(Request $request, $ID_user)
     {
         $user = User::findOrFail($ID_user)
@@ -38,14 +38,14 @@ class UserRepository extends Repository
         return response()->json($user);
     }
 
-    //GET: /api/restify/announces/ID_announce
+    //GET: /api/restify/users/ID_user
     public function show(Request $request, $ID_user)
     {
         $user = User::findOrFail($ID_user);
         return response()->json($user);
     }
 
-    //DELETE: /api/restify/announces/ID_announce No funciona con JSON
+    //DELETE: /api/restify/users/ID_user No funciona con JSON
     public function destroy(Request $request, $ID_user)
     {
         User::destroy($ID_user);

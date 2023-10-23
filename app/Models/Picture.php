@@ -11,4 +11,9 @@ class Picture extends Model
 
     public $timestamps = false;
     protected $primaryKey = 'ID_picture';
+
+    protected $fillable = [
+        'img',
+        'ID_announce',
+    ];
 }

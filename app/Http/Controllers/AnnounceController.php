@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Announce;
 use App\Models\Location;
 use App\Models\User;
+use App\Models\Picture;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -119,11 +120,13 @@ class AnnounceController extends Controller
 
         $user = User::find($announce->ID_user);
         $location = Location::find($announce->ID_location);
+        $pictures = Picture::where('ID_announce', $announce->ID_announce)->get();
 
         $announceUserLoc = [
             'announce' => $announce,
             'user' => $user,
             'location' => $location,
+            'pictures' => $pictures,
         ];
 
         return response()->json($announceUserLoc);
