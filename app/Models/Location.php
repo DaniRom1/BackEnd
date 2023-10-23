@@ -11,4 +11,11 @@ class Location extends Model
 
     public $timestamps = false;
     protected $primaryKey = 'ID_location';
+
+    protected $fillable = [
+        'ID_location',
+        'localidad',
+        'provincia',
+        'country',
+    ];
 }

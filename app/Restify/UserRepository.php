@@ -18,7 +18,7 @@ class UserRepository extends Repository
     {
         return [
             field('ID_user'),
-            field('nickname')->rules('required'),
+            field('nickname'),
 
             field('email')->storingRules('required', 'unique:users')->messages([
                 'required' => 'This field is required.',
