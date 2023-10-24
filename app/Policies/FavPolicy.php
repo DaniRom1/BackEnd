@@ -22,7 +22,7 @@ class FavPolicy
 
     public function store(User $user): bool
     {
-        return false;
+        return true;
     }
 
     public function storeBulk(User $user): bool
@@ -47,6 +47,6 @@ class FavPolicy
 
     public function delete(User $user, Fav $model): bool
     {
-        return false;
+        return true;
     }
 }
