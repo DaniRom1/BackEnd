@@ -3,6 +3,7 @@
 namespace App\Restify;
 
 use App\Models\Fav;
+use App\Models\Announce;
 use Illuminate\Http\Request;
 use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
@@ -10,12 +11,19 @@ use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 // GET: /api/restify/favs Archivo JSON: "search":ID_user
 class CustomFavsSearchFilter extends SearchableFilter
 {
+
+    /*
+        $ID_announce = $request->ID_announce;
+        $announce = Announce::find($ID_announce);
+
+        $user = User::find($announce->ID_user);
+        $location = Location::find($announce->ID_location);
+        $pictures = Picture::where('ID_announce', $announce->ID_announce)->get();
+    */
     public function filter(RestifyRequest $request, $query, $value)
     {
         $query->where('ID_user', $value);
-        $query->orderBy('ID_announce','desc');
-        $announces = $query->get();
-        return response()->json($announces);
+        return response()->json($query);
     }
 }
 

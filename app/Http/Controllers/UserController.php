@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Announce;
 use App\Models\Location;
+use App\Models\Fav;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -38,7 +39,6 @@ class UserController extends Controller
         $user = User::find($ID_user);
 
         $announces = Announce::where("ID_user", $user->ID_user)->get();
-
         $announcesLoc = [];
         foreach ($announces as $announce) {
             $location = Location::find($announce->ID_location);
@@ -48,13 +48,24 @@ class UserController extends Controller
             ];
         }
 
-        $userAnnouncesLoc = [
+        $favs = Fav::where("ID_user", $user->ID_user)->get();
+        $favsAnnounces = [];
+        foreach($favs as $fav){
+            $favData = Announce::find($fav->ID_announce);
+            $favsAnnounces[] = [
+                'fav' => $fav,
+                'favData' => $favData
+            ];
+        }
+
+        $userData = [
             'user' => $user,
             'announces' => $announcesLoc,
+            'favs' => $favsAnnounces,
             //'location' => $location,
         ];
 
-        return response()->json($userAnnouncesLoc);
+        return response()->json($userData);
 
         /*
         $jsonResponse = response()->json($announceUser);
