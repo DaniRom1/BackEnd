@@ -15,6 +15,7 @@ class LocationRepository extends Repository
             field('ID_location'),
             field('localidad'),
             field('provincia'),
+            field('comunidad'),
             field('country'),
         ];
     }

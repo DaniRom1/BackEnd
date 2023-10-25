@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('ID_location');
             $table->string('localidad', 50);
             $table->string('provincia', 50);
+            $table->string('comunidad', 50);
             $table->string('country', 50);
         });
     }
