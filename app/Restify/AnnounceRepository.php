@@ -3,6 +3,7 @@
 namespace App\Restify;
 
 use App\Models\Announce;
+use App\Models\Fav;
 use Illuminate\Http\Request;
 use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
