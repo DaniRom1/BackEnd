@@ -16,6 +16,7 @@ class Location extends Model
         'ID_location',
         'localidad',
         'provincia',
+        'comunidad',
         'country',
     ];
 }

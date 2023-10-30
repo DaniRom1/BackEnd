@@ -14,7 +14,20 @@ class AnnounceController extends Controller
     public function list()
     {
         $announces = Announce::all();
-        return response()->json($announces);
+        foreach($announces as $announce){
+            $location = Location::find($announce->ID_location);
+            $user = User::find($announce->ID_user);
+            $picture = Picture::where('ID_announce', $announce->ID_announce)->first();
+            $announcesData[] = [
+                'announce' => $announce,
+                'user' => $user,
+                'location' => $location,
+                'picture' => $picture,
+            ];
+        }
+
+        return response()->json($announcesData);
+        //return response()->json($announces);
     }
 
     public function create(Request $request)
@@ -110,7 +123,19 @@ class AnnounceController extends Controller
 
         $announces = $query->get();
 
-        return response()->json($announces);
+        foreach($announces as $announce){
+            $location = Location::find($announce->ID_location);
+            $user = User::find($announce->ID_user);
+            $picture = Picture::where('ID_announce', $announce->ID_announce)->first();
+            $announcesLoc[] = [
+                'announce' => $announce,
+                'user' => $user,
+                'location' => $location,
+                'picture' => $picture,
+            ];
+        }
+
+        return response()->json($announcesLoc);
     }
 
     public function announce(Request $request)
