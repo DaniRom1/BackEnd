@@ -3,8 +3,8 @@
 namespace App\Restify;
 
 use App\Models\Announce;
+use App\Models\Location;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
@@ -101,7 +101,15 @@ class AnnounceRepository extends Repository
     public function store(Request $request)
     {
         $data = $request->all();
+
+        $location = $data['location'];
+        $location = Location::where('localidad', $location)->first();
+        $data['ID_location'] = $location->ID_location;
+
+        $data['available'] = true;
+        
         $announce = Announce::create($data);
+        
         return response()->json($announce);
     }
 
