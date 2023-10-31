@@ -45,4 +45,11 @@ class Announce extends Model
         return $this->belongsTo(User::class, 'ID_user');
     }
 
+    public function isFavourite($ID_user)
+    {
+        return Fav::where('ID_user', $ID_user)
+            ->where('ID_announce', $this->ID_announce)
+            ->exists();
+    }
+
 }

@@ -123,7 +123,7 @@ class AnnounceController extends Controller
         if ($type != null)
             $query->where('type', $type);
 
-        $query->selectRaw('announces.*, CASE WHEN favs."ID_announce" IS NOT NULL THEN true ELSE false END AS favourite')
+        $query->selectRaw('announces.*, CASE WHEN favs."ID_announce" IS NOT NULL THEN true ELSE false END AS "isFavourite"')
             ->from('announces')
             ->leftJoin('favs', function ($join) use ($ID_user) {
                 $join->on('announces.ID_announce', '=', 'favs.ID_announce')

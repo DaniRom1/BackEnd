@@ -58,7 +58,7 @@ class UserRepository extends Repository
     public function update(Request $request, $ID_user)
     {
         $user = User::findOrFail($ID_user)
-            ->update($request->all()); 
+            ->update($request->all());
 
         return response()->json($user);
     }
@@ -67,7 +67,11 @@ class UserRepository extends Repository
     public function show(Request $request, $ID_user)
     {
         //$user = User::findOrFail($ID_user);
+        //$user = User::with('announces', 'favs')->findOrFail($ID_user);
         $user = User::with('announces', 'favs')->findOrFail($ID_user);
+        foreach ($user->announces as $announce) {
+            $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
+        }
         return response()->json($user);
     }
 
@@ -79,5 +83,5 @@ class UserRepository extends Repository
         return response()->json($response);
     }
 
-    
+
 }
