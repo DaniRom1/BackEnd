@@ -4,6 +4,7 @@ namespace App\Restify;
 
 use App\Models\Announce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
@@ -14,7 +15,7 @@ class CustomAnnounceSearchFilter extends SearchableFilter
     public function filter(RestifyRequest $request, $query, $value)
     {
         $query->where('ID_user', $value);
-        $query->orderBy('ID_announce','desc');
+        $query->orderBy('ID_announce', 'desc');
         $announces = $query->get();
         return response()->json($announces);
     }
@@ -24,14 +25,14 @@ class AnnounceRepository extends Repository
 {
     public static string $model = Announce::class;
 
-    
+
     public static function searchables(): array
     {
         return [
             'announce' => CustomAnnounceSearchFilter::make(),
         ];
     }
-    
+
 
     public function fields(RestifyRequest $request): array
     {
@@ -55,10 +56,22 @@ class AnnounceRepository extends Repository
         ];
     }
 
-    //GET: /api/restify/announces/ID_announce
-    public function show(Request $request, $ID_announce)
+    /*
+    public function index(Request $request)
     {
-        $announce = Announce::findOrFail($ID_announce);
+        $ID_user = $request->ID_user;
+        $query = 'SELECT a.*, CASE WHEN f."ID_announce" IS NOT NULL THEN true ELSE false END AS favourite FROM announces a LEFT JOIN favs f ON a."ID_announce" = f."ID_announce" AND f."ID_user" ='.$ID_user.' ORDER BY favourite DESC, "ID_announce" DESC;';
+        $response = DB::select($query);
+
+        return response()->json($response);
+    }
+    */
+
+    //GET: /api/restify/announces/ID_announce
+    public function show(Request $request, $ID_announce/*, $ID_user*/)
+    {
+        // $announce = Announce::findOrFail($ID_announce);
+        $announce = Announce::with('location', 'pictures', 'user')->findOrFail($ID_announce);
         return response()->json($announce);
     }
 
@@ -66,7 +79,7 @@ class AnnounceRepository extends Repository
     public function update(Request $request, $ID_announce)
     {
         $announce = Announce::findOrFail($ID_announce)
-            ->update($request->all()); 
+            ->update($request->all());
 
         return response()->json($announce);
     }

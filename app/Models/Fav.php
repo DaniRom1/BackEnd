@@ -17,4 +17,9 @@ class Fav extends Model
         'ID_announce',
         'ID_user',
     ];
+
+    public function announce()
+    {
+        return $this->belongsTo(Announce::class, 'ID_announce')->with('location')->with('pictures')->with('user');
+    }
 }

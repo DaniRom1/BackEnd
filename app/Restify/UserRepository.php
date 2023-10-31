@@ -66,7 +66,8 @@ class UserRepository extends Repository
     //GET: /api/restify/users/ID_user
     public function show(Request $request, $ID_user)
     {
-        $user = User::findOrFail($ID_user);
+        //$user = User::findOrFail($ID_user);
+        $user = User::with('announces', 'favs')->findOrFail($ID_user);
         return response()->json($user);
     }
 

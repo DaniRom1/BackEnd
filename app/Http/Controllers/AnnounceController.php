@@ -14,7 +14,7 @@ class AnnounceController extends Controller
     public function list()
     {
         $announces = Announce::all();
-        foreach($announces as $announce){
+        foreach ($announces as $announce) {
             $location = Location::find($announce->ID_location);
             $user = User::find($announce->ID_user);
             $picture = Picture::where('ID_announce', $announce->ID_announce)->first();
@@ -78,6 +78,8 @@ class AnnounceController extends Controller
     {
         $query = Announce::query();
 
+        $ID_user = $request->ID_user;
+
         $min_price = $request->min_price;
         if ($min_price == null)
             $min_price = 0;
@@ -121,9 +123,17 @@ class AnnounceController extends Controller
         if ($type != null)
             $query->where('type', $type);
 
+        $query->selectRaw('announces.*, CASE WHEN favs."ID_announce" IS NOT NULL THEN true ELSE false END AS favourite')
+            ->from('announces')
+            ->leftJoin('favs', function ($join) use ($ID_user) {
+                $join->on('announces.ID_announce', '=', 'favs.ID_announce')
+                    ->where('favs.ID_user', $ID_user);
+            })
+            ->orderBy('announces.ID_announce', 'desc');
+
         $announces = $query->get();
 
-        foreach($announces as $announce){
+        foreach ($announces as $announce) {
             $location = Location::find($announce->ID_location);
             $user = User::find($announce->ID_user);
             $picture = Picture::where('ID_announce', $announce->ID_announce)->first();
@@ -155,7 +165,7 @@ class AnnounceController extends Controller
         ];
 
         return response()->json($announceUserLoc);
-        
+
         /*
         $jsonResponse = response()->json($announceUser);
         $redirectResponse = redirect()->route('');
