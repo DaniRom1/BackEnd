@@ -72,7 +72,7 @@ class AnnounceRepository extends Repository
     }
 
     //GET: /api/restify/announces/ID_announce
-    public function show(Request $request, $ID_announce /*, $ID_user*/)
+    public function show(Request $request, $ID_announce)
     {
         $announce = Announce::with('location', 'pictures', 'user')->findOrFail($ID_announce);
         $ID_user = $request->ID_user;

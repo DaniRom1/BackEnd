@@ -132,6 +132,7 @@ class AnnounceController extends Controller
             ->orderBy('announces.ID_announce', 'desc');
 
         $announces = $query->get();
+        $count = $query->count();
 
         foreach ($announces as $announce) {
             $location = Location::find($announce->ID_location);
@@ -145,7 +146,9 @@ class AnnounceController extends Controller
             ];
         }
 
-        return response()->json($announcesLoc);
+        return response()->json([
+            'totalResults' => $count,
+            'announces' => $announcesLoc]);
     }
 
     public function announce(Request $request)
