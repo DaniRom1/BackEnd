@@ -46,14 +46,14 @@ class FavRepository extends Repository
         ];
     }
 
-    //GET: /api/restify/favs/ID_user
-    /*
-    public function show(Request $request, $ID_user)
+    //GET: /api/restify/favs/ID_fav
+    public function show(Request $request, $ID_announce)
     {
-        $fav = Fav::where('ID_user', $ID_user)->get();
+        //$fav = Fav::findOrFail($ID_fav);
+        $fav = Fav::with('announce')->findOrFail($ID_announce);
         return response()->json($fav);
     }
-    */
+    
 
     //DELETE: /api/restify/favs/ID_fav No funciona con JSON
     public function destroy(Request $request, $ID_fav)

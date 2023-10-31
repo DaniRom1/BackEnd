@@ -45,4 +45,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function announces()
+    {
+        return $this->hasMany(Announce::class, 'ID_user')->with('location')->with('pictures');
+    }
+
+    public function favs()
+    {
+        return $this->hasMany(Fav::class, 'ID_user')->with('announce');
+    }
+
 }

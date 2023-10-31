@@ -29,4 +29,20 @@ class Announce extends Model
         'ID_location',
         'ID_user',
     ];
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'ID_location');
+    }
+
+    public function pictures()
+    {
+        return $this->hasMany(Picture::class, 'ID_announce');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'ID_user');
+    }
+
 }
