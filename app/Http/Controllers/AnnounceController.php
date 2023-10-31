@@ -139,9 +139,9 @@ class AnnounceController extends Controller
             $picture = Picture::where('ID_announce', $announce->ID_announce)->first();
             $announcesLoc[] = [
                 'announce' => $announce,
-                'user' => $user,
                 'location' => $location,
                 'picture' => $picture,
+                'user' => $user,
             ];
         }
 
