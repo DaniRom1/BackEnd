@@ -9,15 +9,13 @@ use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
 
-// GET: /api/restify/announces Archivo JSON: "search":ID_user
-class CustomAnnounceSearchFilter extends SearchableFilter
+// GET: /api/restify/announces Archivo JSON: "search":Busqueda
+class CustomAnnSearchFilter extends SearchableFilter
 {
     public function filter(RestifyRequest $request, $query, $value)
     {
-        $query->where('ID_user', $value);
-        $query->orderBy('ID_announce', 'desc');
-        $announces = $query->get();
-        return response()->json($announces);
+        $query->where('title', 'like', '%'. $value .'%');
+        return response()->json($query);
     }
 }
 
@@ -25,11 +23,10 @@ class AnnounceRepository extends Repository
 {
     public static string $model = Announce::class;
 
-
     public static function searchables(): array
     {
         return [
-            'announce' => CustomAnnounceSearchFilter::make(),
+            'announce' => CustomAnnSearchFilter::make(),
         ];
     }
 
@@ -59,7 +56,7 @@ class AnnounceRepository extends Repository
     public function index(Request $request)
     {
         $ID_user = $request->ID_user;
-        $announces = Announce::with('location', 'pictures', 'user')
+        $announces = Announce::with(Announce::required())
             ->selectRaw('announces.*, CASE WHEN favs."ID_announce" IS NOT NULL THEN true ELSE false END AS "isFavourite"')
             ->leftJoin('favs', function ($join) use ($ID_user) {
                 $join->on('announces.ID_announce', '=', 'favs.ID_announce')
@@ -74,7 +71,7 @@ class AnnounceRepository extends Repository
     //GET: /api/restify/announces/ID_announce
     public function show(Request $request, $ID_announce)
     {
-        $announce = Announce::with('location', 'pictures', 'user')->findOrFail($ID_announce);
+        $announce = Announce::with(Announce::required())->findOrFail($ID_announce);
         $ID_user = $request->ID_user;
         $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
         return response()->json($announce);
@@ -107,9 +104,9 @@ class AnnounceRepository extends Repository
         $data['ID_location'] = $location->ID_location;
 
         $data['available'] = true;
-        
+
         $announce = Announce::create($data);
-        
+
         return response()->json($announce);
     }
 

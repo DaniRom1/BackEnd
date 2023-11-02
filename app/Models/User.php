@@ -56,4 +56,9 @@ class User extends Authenticatable
         return $this->hasMany(Fav::class, 'ID_user')->with('announce');
     }
 
+    public static function required()
+    {
+        return ['announces', 'favs'];
+    }
+
 }

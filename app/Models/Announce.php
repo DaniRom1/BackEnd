@@ -52,4 +52,9 @@ class Announce extends Model
             ->exists();
     }
 
+    public static function required()
+    {
+        return ['location', 'pictures', 'user'];
+    }
+
 }
