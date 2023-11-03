@@ -14,7 +14,7 @@ class CustomAnnSearchFilter extends SearchableFilter
 {
     public function filter(RestifyRequest $request, $query, $value)
     {
-        $query->where('title', 'like', '%'. $value .'%');
+        $query->where('title', 'like', '%' . $value . '%');
         return response()->json($query);
     }
 }
@@ -22,14 +22,6 @@ class CustomAnnSearchFilter extends SearchableFilter
 class AnnounceRepository extends Repository
 {
     public static string $model = Announce::class;
-
-    public static function searchables(): array
-    {
-        return [
-            'announce' => CustomAnnSearchFilter::make(),
-        ];
-    }
-
 
     public function fields(RestifyRequest $request): array
     {
@@ -61,9 +53,44 @@ class AnnounceRepository extends Repository
             ->leftJoin('favs', function ($join) use ($ID_user) {
                 $join->on('announces.ID_announce', '=', 'favs.ID_announce')
                     ->where('favs.ID_user', $ID_user);
-            })
-            ->orderBy('announces.ID_announce', 'desc')
-            ->get();
+            });
+
+        if ($request->has('search')) {
+            $value = $request->get('search');
+            $announces->whereRaw('LOWER(title) like ?', ['%' . strtolower($value) . '%']);
+        }
+
+        /*
+        $min_price = $request->min_price;
+        if ($min_price == null)
+            $min_price = 0;
+
+        $max_price = $request->max_price;
+        if ($max_price == null)
+            $max_price = 999999999;
+
+        $min_year = $request->min_year;
+        if ($min_year == null)
+            $min_year = 0;
+
+        $max_year = $request->max_year;
+        if ($max_year == null)
+            $max_year = 9999;
+
+        $min_length = $request->min_length;
+        if ($min_length == null)
+            $min_length = 0;
+
+        $max_length = $request->max_length;
+        if ($max_length == null)
+            $max_length = 999.99;
+
+        $announces->whereBetween('price', [$min_price, $max_price]);
+        $announces->whereBetween('year', [$min_year, $max_year]);
+        $announces->whereBetween('length', [$min_length, $max_length]);
+        */
+
+        $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(5);
 
         return response()->json($announces);
     }
