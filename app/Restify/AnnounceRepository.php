@@ -9,30 +9,19 @@ use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
 
-// GET: /api/restify/announces Archivo JSON: "search":ID_user
-class CustomAnnounceSearchFilter extends SearchableFilter
+// GET: /api/restify/announces Archivo JSON: "search":Busqueda
+class CustomAnnSearchFilter extends SearchableFilter
 {
     public function filter(RestifyRequest $request, $query, $value)
     {
-        $query->where('ID_user', $value);
-        $query->orderBy('ID_announce', 'desc');
-        $announces = $query->get();
-        return response()->json($announces);
+        $query->where('title', 'like', '%' . $value . '%');
+        return response()->json($query);
     }
 }
 
 class AnnounceRepository extends Repository
 {
     public static string $model = Announce::class;
-
-
-    public static function searchables(): array
-    {
-        return [
-            'announce' => CustomAnnounceSearchFilter::make(),
-        ];
-    }
-
 
     public function fields(RestifyRequest $request): array
     {
@@ -58,15 +47,90 @@ class AnnounceRepository extends Repository
 
     public function index(Request $request)
     {
-        $ID_user = $request->ID_user;
-        $announces = Announce::with('location', 'pictures', 'user')
+        //$ID_user = $request->ID_user;
+        $ID_user = auth()->user()->ID_user;
+
+        $announces = Announce::with(Announce::required())
             ->selectRaw('announces.*, CASE WHEN favs."ID_announce" IS NOT NULL THEN true ELSE false END AS "isFavourite"')
             ->leftJoin('favs', function ($join) use ($ID_user) {
                 $join->on('announces.ID_announce', '=', 'favs.ID_announce')
                     ->where('favs.ID_user', $ID_user);
-            })
-            ->orderBy('announces.ID_announce', 'desc')
-            ->get();
+            });
+
+        /*if ($request->has('search')) {
+            $value = $request->get('search');
+            $announces->whereRaw('LOWER(title) like ?', ['%' . strtolower($value) . '%']);
+        }*/
+
+        $title = $request->title;
+        if ($title != null)
+            $announces->whereRaw('LOWER(title) like ?', ['%' . strtolower($title) . '%']);
+
+        $min_price = $request->min_price;
+        if ($min_price == null)
+            $min_price = 0;
+
+        $max_price = $request->max_price;
+        if ($max_price == null)
+            $max_price = 999999999;
+
+        $min_year = $request->min_year;
+        if ($min_year == null)
+            $min_year = 0;
+
+        $max_year = $request->max_year;
+        if ($max_year == null)
+            $max_year = 9999;
+
+        $min_length = $request->min_length;
+        if ($min_length == null)
+            $min_length = 0;
+
+        $max_length = $request->max_length;
+        if ($max_length == null)
+            $max_length = 999.99;
+
+        $min_width = $request->min_width;
+        if ($min_width == null)
+            $min_width = 0;
+
+        $max_width = $request->max_width;
+        if ($max_width == null)
+            $max_width = 999.99;
+
+        $min_power = $request->min_power;
+        if ($min_power == null)
+            $min_power = 0;
+
+        $max_power = $request->max_power;
+        if ($max_power == null)
+            $max_power = 9999;
+
+        $announces->whereBetween('price', [$min_price, $max_price]);
+        $announces->whereBetween('year', [$min_year, $max_year]);
+        $announces->whereBetween('length', [$min_length, $max_length]);
+        $announces->whereBetween('length', [$min_width, $max_width]);
+        $announces->whereBetween('power', [$min_power, $max_power]);
+
+        $available = $request->available;
+        if ($available != null)
+            $announces->where('available', $available);
+
+        $type = $request->type;
+        if ($type != null)
+            $announces->where('type', $type);
+
+        $fuel = $request->fuel;
+        if ($fuel != null)
+            $announces->where('fuel', $fuel);
+
+        $location = $request->location;
+        if ($location != null) {
+            $ID_location = Location::where('provincia', $location)->pluck('ID_location');
+            $announces->whereIn('ID_location', $ID_location);
+        }
+
+        $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(15);
 
         return response()->json($announces);
     }
@@ -74,9 +138,11 @@ class AnnounceRepository extends Repository
     //GET: /api/restify/announces/ID_announce
     public function show(Request $request, $ID_announce)
     {
-        $announce = Announce::with('location', 'pictures', 'user')->findOrFail($ID_announce);
-        $ID_user = $request->ID_user;
+        $announce = Announce::with(Announce::required())->findOrFail($ID_announce);
+        $ID_user = auth()->user()->ID_user;
         $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
+        $announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
+
         return response()->json($announce);
     }
 
@@ -107,9 +173,9 @@ class AnnounceRepository extends Repository
         $data['ID_location'] = $location->ID_location;
 
         $data['available'] = true;
-        
+
         $announce = Announce::create($data);
-        
+
         return response()->json($announce);
     }
 

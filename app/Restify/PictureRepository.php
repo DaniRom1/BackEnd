@@ -4,11 +4,29 @@ namespace App\Restify;
 
 use App\Models\Picture;
 use Illuminate\Http\Request;
+use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
+
+// GET: /api/restify/pictures Archivo JSON: "search":ID_announce
+class CustomPicSearchFilter extends SearchableFilter
+{
+    public function filter(RestifyRequest $request, $query, $value)
+    {
+        $query->where('ID_announce', $value);
+        return response()->json($query);
+    }
+}
 
 class PictureRepository extends Repository
 {
     public static string $model = Picture::class;
+
+    public static function searchables(): array
+    {
+        return [
+            'picture' => CustomPicSearchFilter::make(),
+        ];
+    }
 
     public function fields(RestifyRequest $request): array
     {
@@ -52,5 +70,13 @@ class PictureRepository extends Repository
             $picture = Picture::create($pictureData);
         }
         return response()->json($picture);
+    }
+
+    //DELETE: /api/restify/pictures/ID_picture No funciona con JSON
+    public function destroy(Request $request, $ID_picture)
+    {
+        Picture::destroy($ID_picture);
+        $response = ["response" => 'La imagen ' . $ID_picture . ' fue eliminada'];
+        return response()->json($response);
     }
 }
