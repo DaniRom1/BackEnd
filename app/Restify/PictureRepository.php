@@ -71,4 +71,12 @@ class PictureRepository extends Repository
         }
         return response()->json($picture);
     }
+
+    //DELETE: /api/restify/pictures/ID_picture No funciona con JSON
+    public function destroy(Request $request, $ID_picture)
+    {
+        Picture::destroy($ID_picture);
+        $response = ["response" => 'La imagen ' . $ID_picture . ' fue eliminada'];
+        return response()->json($response);
+    }
 }

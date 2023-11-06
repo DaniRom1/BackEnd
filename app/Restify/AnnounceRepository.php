@@ -47,7 +47,9 @@ class AnnounceRepository extends Repository
 
     public function index(Request $request)
     {
-        $ID_user = $request->ID_user;
+        //$ID_user = $request->ID_user;
+        $ID_user = auth()->user()->ID_user;
+
         $announces = Announce::with(Announce::required())
             ->selectRaw('announces.*, CASE WHEN favs."ID_announce" IS NOT NULL THEN true ELSE false END AS "isFavourite"')
             ->leftJoin('favs', function ($join) use ($ID_user) {
@@ -55,12 +57,15 @@ class AnnounceRepository extends Repository
                     ->where('favs.ID_user', $ID_user);
             });
 
-        if ($request->has('search')) {
+        /*if ($request->has('search')) {
             $value = $request->get('search');
             $announces->whereRaw('LOWER(title) like ?', ['%' . strtolower($value) . '%']);
-        }
+        }*/
 
-        /*
+        $title = $request->title;
+        if ($title != null)
+            $announces->whereRaw('LOWER(title) like ?', ['%' . strtolower($title) . '%']);
+
         $min_price = $request->min_price;
         if ($min_price == null)
             $min_price = 0;
@@ -85,12 +90,47 @@ class AnnounceRepository extends Repository
         if ($max_length == null)
             $max_length = 999.99;
 
+        $min_width = $request->min_width;
+        if ($min_width == null)
+            $min_width = 0;
+
+        $max_width = $request->max_width;
+        if ($max_width == null)
+            $max_width = 999.99;
+
+        $min_power = $request->min_power;
+        if ($min_power == null)
+            $min_power = 0;
+
+        $max_power = $request->max_power;
+        if ($max_power == null)
+            $max_power = 9999;
+
         $announces->whereBetween('price', [$min_price, $max_price]);
         $announces->whereBetween('year', [$min_year, $max_year]);
         $announces->whereBetween('length', [$min_length, $max_length]);
-        */
+        $announces->whereBetween('length', [$min_width, $max_width]);
+        $announces->whereBetween('power', [$min_power, $max_power]);
 
-        $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(5);
+        $available = $request->available;
+        if ($available != null)
+            $announces->where('available', $available);
+
+        $type = $request->type;
+        if ($type != null)
+            $announces->where('type', $type);
+
+        $fuel = $request->fuel;
+        if ($fuel != null)
+            $announces->where('fuel', $fuel);
+
+        $location = $request->location;
+        if ($location != null) {
+            $ID_location = Location::where('provincia', $location)->pluck('ID_location');
+            $announces->whereIn('ID_location', $ID_location);
+        }
+
+        $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(15);
 
         return response()->json($announces);
     }
@@ -99,8 +139,10 @@ class AnnounceRepository extends Repository
     public function show(Request $request, $ID_announce)
     {
         $announce = Announce::with(Announce::required())->findOrFail($ID_announce);
-        $ID_user = $request->ID_user;
+        $ID_user = auth()->user()->ID_user;
         $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
+        $announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
+
         return response()->json($announce);
     }
 
