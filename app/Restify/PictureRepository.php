@@ -3,30 +3,13 @@
 namespace App\Restify;
 
 use App\Models\Picture;
+use App\Models\Announce;
 use Illuminate\Http\Request;
-use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
-
-// GET: /api/restify/pictures Archivo JSON: "search":ID_announce
-class CustomPicSearchFilter extends SearchableFilter
-{
-    public function filter(RestifyRequest $request, $query, $value)
-    {
-        $query->where('ID_announce', $value);
-        return response()->json($query);
-    }
-}
 
 class PictureRepository extends Repository
 {
     public static string $model = Picture::class;
-
-    public static function searchables(): array
-    {
-        return [
-            'picture' => CustomPicSearchFilter::make(),
-        ];
-    }
 
     public function fields(RestifyRequest $request): array
     {
@@ -66,10 +49,26 @@ class PictureRepository extends Repository
     public function store(Request $request)
     {
         $data = $request->all();
-        foreach ($data['pictures'] as $pictureData) {
-            $picture = Picture::create($pictureData);
+        $pictures = [];
+
+        /*$ID_announce = $data['ID_announce'];
+        $announce = Announce::findOrFail($announceId);
+        $currentImageCount = $announce->pictures->count();*/
+        
+        $ID_announce = $data['pictures'][0]['ID_announce'];
+        $announce = Announce::findOrFail($ID_announce);
+        $announcePictures = $announce->pictures->count();
+
+        foreach ($data['pictures'] as $i => $pictureData) {
+            $picNumber = $announcePictures + $i + 1;
+            $picName = "announce" . $pictureData['ID_announce'] . "_picture" . $picNumber . ".jpg";
+            $picture = Picture::create([
+                'img' => $picName,
+                'ID_announce' => $pictureData['ID_announce'],
+            ]);
+            $pictures[] = $picture;
         }
-        return response()->json($picture);
+        return response()->json($pictures);
     }
 
     //DELETE: /api/restify/pictures/ID_picture No funciona con JSON

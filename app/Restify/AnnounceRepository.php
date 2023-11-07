@@ -130,7 +130,7 @@ class AnnounceRepository extends Repository
             $announces->whereIn('ID_location', $ID_location);
         }
 
-        $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(15);
+        $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(10);
 
         return response()->json($announces);
     }
@@ -167,11 +167,12 @@ class AnnounceRepository extends Repository
     public function store(Request $request)
     {
         $data = $request->all();
-
+        $ID_user = auth()->user()->ID_user;
+        
         $location = $data['location'];
         $location = Location::where('localidad', $location)->first();
         $data['ID_location'] = $location->ID_location;
-
+        $data['ID_user']  = $ID_user;
         $data['available'] = true;
 
         $announce = Announce::create($data);

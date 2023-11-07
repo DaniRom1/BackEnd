@@ -65,3 +65,5 @@ Route::post('login', \App\Http\Controllers\Restify\Auth\LoginController::class)
     ->middleware('throttle:6,1')
     ->name('restify.verify');
 
+    Route::post('logout', [\App\Http\Controllers\Restify\Auth\LoginController::class, 'logout'])
+    ->middleware('auth:sanctum');
