@@ -50,20 +50,25 @@ class PictureRepository extends Repository
     {
         $data = $request->all();
         $pictures = [];
-
-        /*$ID_announce = $data['ID_announce'];
-        $announce = Announce::findOrFail($announceId);
-        $currentImageCount = $announce->pictures->count();*/
+        $basePath = "http://192.168.1.95:8000/images/announce/";
+        //$defaultPicturePath = "http://192.168.1.95:8000/images/announce/announce_default.jpg";
         
         $ID_announce = $data['pictures'][0]['ID_announce'];
         $announce = Announce::findOrFail($ID_announce);
-        $announcePictures = $announce->pictures->count();
+        $picturesCount = $announce->pictures->count();
 
         foreach ($data['pictures'] as $i => $pictureData) {
-            $picNumber = $announcePictures + $i + 1;
+            $picNumber = $picturesCount + $i + 1;
             $picName = "announce" . $pictureData['ID_announce'] . "_picture" . $picNumber . ".jpg";
+            $picPath = $basePath . $picName;
+            
+            //Guardar imagen en el directorio
+            //$image = $request->file('img');
+            //$image->storeAs($basePath, $picName);
+            
             $picture = Picture::create([
-                'img' => $picName,
+                'img' => $picPath,
+                //'img' => $defaultPicturePath,
                 'ID_announce' => $pictureData['ID_announce'],
             ]);
             $pictures[] = $picture;

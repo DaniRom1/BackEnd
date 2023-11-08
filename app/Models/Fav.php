@@ -22,4 +22,9 @@ class Fav extends Model
     {
         return $this->belongsTo(Announce::class, 'ID_announce')->with('location')->with('pictures')->with('user');
     }
+
+    public static function required()
+    {
+        return ['announce'];
+    }
 }

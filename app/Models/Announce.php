@@ -56,5 +56,4 @@ class Announce extends Model
     {
         return ['location', 'pictures', 'user'];
     }
-
 }
