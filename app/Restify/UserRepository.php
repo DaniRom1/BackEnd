@@ -7,27 +7,11 @@ use Illuminate\Http\Request;
 use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
-// GET: /api/restify/favs Archivo JSON: "search":ID_user
-class CustomUserSearchFilter extends SearchableFilter
-{
-    public function filter(RestifyRequest $request, $query, $value)
-    {
-        $query->where('ID_user', $value);
-        return response()->json($query);
-    }
-}
 
 class UserRepository extends Repository
 {
 
     public static string $model = User::class;
-
-    public static function searchables(): array
-    {
-        return [
-            'user' => CustomUserSearchFilter::make(),
-        ];
-    }
 
     public function fields(RestifyRequest $request): array
     {
@@ -47,10 +31,23 @@ class UserRepository extends Repository
     //PATCH: /api/restify/users/ID_user Fichero JSON con cambios
     public function update(Request $request, $ID_user)
     {
-        $user = User::findOrFail($ID_user)
-            ->update($request->all());
+        $userData = $request->all();
+        $ID_user = auth()->user()->ID_user;
+        $basePath = "http://192.168.1.95:8000/images/user/";
+        $picName = "profile_picture_" . $ID_user . "jpg";
+
+        if (isset($userData['profile_picture'])) {
+            $userData['profile_picture'] = $basePath . $picName;
+        }
+
+        $user = User::findOrFail($ID_user)->update($userData);
 
         return response()->json($user);
+
+        /*$user = User::findOrFail($ID_user)
+            ->update($request->all());
+
+        return response()->json($user);*/
     }
 
     //GET: /api/restify/users/ID_user

@@ -28,8 +28,8 @@ class RegisterController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
             'phone_number' => $request->input('phone_number'),
-            'profile_picture' => 'user-default.jpg',
-            'profile_type' => 'Usuario',
+            'profile_picture' => 'http://192.168.1.95:8000/images/user/user-default.jpg',
+            'profile_type' => 'Particular',
         ]);
 
         return rest($user)->indexMeta([
