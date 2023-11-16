@@ -58,7 +58,7 @@ class User extends Authenticatable
 
     public static function required()
     {
-        return ['announces', 'favs'];
+    return ['announces'/*, 'favs'*/];
     }
 
 }

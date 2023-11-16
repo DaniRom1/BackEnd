@@ -50,7 +50,9 @@ class FavRepository extends Repository
     //POST /api/restify/announces Fichero JSON con los datos
     public function store(Request $request)
     {
+        $ID_user = auth()->user()->ID_user;
         $data = $request->all();
+        $data['ID_user'] = $ID_user;
         $fav = Fav::create($data);
         return response()->json($fav);
     }
