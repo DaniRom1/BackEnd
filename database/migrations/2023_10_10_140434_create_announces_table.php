@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('year');
             $table->float('length');
             $table->float('width');
+            $table->float('draught');
             $table->integer('power');
             $table->integer('engines');
             $table->string('fuel', 9);
