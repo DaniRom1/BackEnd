@@ -23,6 +23,7 @@ class Announce extends Model
         'length',
         'width',
         'power',
+        'draught',
         'engines',
         'fuel',
         'flag',

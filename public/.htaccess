@@ -1,3 +1,20 @@
+# CORS Configuration - Allow from any origin
+#<IfModule mod_headers.c>
+#Header set Access-Control-Allow-Origin "*"
+#Header always set Access-Control-Allow-Credentials "true"
+#Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+#Header always set Access-Control-Allow-Headers "x-requested-with, Content-Type, origin, Authorization, accept, client-security-token"
+#</IfModule>
+
+    <IfModule mod_setenvif.c>
+        <IfModule mod_headers.c>
+            <FilesMatch "\.(avifs?|bmp|cur|gif|ico|jpe?g|jxl|a?png|svgz?|webp)$">
+                SetEnvIf Origin ":" IS_CORS
+                Header set Access-Control-Allow-Origin "*" env=IS_CORS
+            </FilesMatch>
+        </IfModule>
+    </IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

@@ -36,6 +36,7 @@ class AnnounceRepository extends Repository
             field('year'),
             field('length'),
             field('width'),
+            field('draught'),
             field('power'),
             field('engines'),
             field('fuel'),
@@ -169,8 +170,9 @@ class AnnounceRepository extends Repository
         $data = $request->all();
         $ID_user = auth()->user()->ID_user;
         
-        $location = $data['location'];
-        $location = Location::where('localidad', $location)->first();
+        $localidad = $data['localidad'];
+        $provincia = $data['provincia'];
+        $location = Location::where('localidad', $localidad)->where('provincia', $provincia)->first();
         $data['ID_location'] = $location->ID_location;
         $data['ID_user']  = $ID_user;
         $data['available'] = true;
