@@ -59,6 +59,7 @@ class UserRepository extends Repository
         foreach ($user->announces as $announce) {
             $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
         }
+
         return response()->json($user);
     }
 

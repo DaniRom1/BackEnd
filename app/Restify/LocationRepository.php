@@ -3,6 +3,7 @@
 namespace App\Restify;
 
 use App\Models\Location;
+use Illuminate\Http\Request;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
 class LocationRepository extends Repository
@@ -20,5 +21,20 @@ class LocationRepository extends Repository
         ];
     }
 
+    public function index(Request $request)
+    {
+        $locations = Location::distinct('comunidad')->orderBy('comunidad', 'asc')->get('comunidad');
+
+        $comunidad = $request->comunidad;
+        if ($comunidad != null)
+            $locations = Location::distinct('provincia')->orderBy('provincia', 'asc')->where('comunidad', $comunidad)->get('provincia');
+
+            $provincia = $request->provincia;
+        if ($provincia != null)
+            $locations = Location::distinct('localidad')->orderBy('localidad', 'asc')->where('provincia', $provincia)->get('localidad');
+
+        
+        return response()->json($locations);
+    }
     
 }

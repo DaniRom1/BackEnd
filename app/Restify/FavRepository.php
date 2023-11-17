@@ -23,9 +23,18 @@ class FavRepository extends Repository
     public function index(Request $request)
     {
         $ID_user = auth()->user()->ID_user;
-        $favs = Fav::with(Fav::required())
+
+        $ID_announce = $request->ID_announce;
+        if ($ID_announce != null) {
+            $favs = Fav::where('ID_user', $ID_user)
+                ->where('favs.ID_announce', $ID_announce)
+                ->pluck('ID_fav');
+        } else{
+            $favs = Fav::with(Fav::required())
             ->where('ID_user', $ID_user)
-            ->paginate(15);
+            ->paginate(10);
+        }
+
         return response()->json($favs);
     }
 
