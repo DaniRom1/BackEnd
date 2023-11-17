@@ -58,10 +58,9 @@ class AnnounceRepository extends Repository
                     ->where('favs.ID_user', $ID_user);
             });
 
-        /*if ($request->has('search')) {
-            $value = $request->get('search');
-            $announces->whereRaw('LOWER(title) like ?', ['%' . strtolower($value) . '%']);
-        }*/
+        $ID_user = $request->ID_user;
+        if($ID_user != null)
+            $announces->where('announces.ID_user', $ID_user);
 
         $title = $request->title;
         if ($title != null)
