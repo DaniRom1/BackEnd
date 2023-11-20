@@ -58,9 +58,11 @@ class AnnounceRepository extends Repository
                     ->where('favs.ID_user', $ID_user);
             });
 
-        $ID_user = $request->ID_user;
-        if($ID_user != null)
-            $announces->where('announces.ID_user', $ID_user);
+        
+
+        $ID_userFilter = $request->ID_user;
+        if ($ID_userFilter != null)
+            $announces->where('announces.ID_user', $ID_userFilter);
 
         $title = $request->title;
         if ($title != null)
@@ -132,6 +134,10 @@ class AnnounceRepository extends Repository
 
         $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(10);
 
+        foreach ($announces as $announce) {
+            $announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
+        }
+
         return response()->json($announces);
     }
 
@@ -168,12 +174,12 @@ class AnnounceRepository extends Repository
     {
         $data = $request->all();
         $ID_user = auth()->user()->ID_user;
-        
+
         $localidad = $data['localidad'];
         $provincia = $data['provincia'];
         $location = Location::where('localidad', $localidad)->where('provincia', $provincia)->first();
         $data['ID_location'] = $location->ID_location;
-        $data['ID_user']  = $ID_user;
+        $data['ID_user'] = $ID_user;
         $data['available'] = true;
 
         $announce = Announce::create($data);
