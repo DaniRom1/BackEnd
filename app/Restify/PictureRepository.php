@@ -20,6 +20,17 @@ class PictureRepository extends Repository
         ];
     }
 
+    public function index(Request $request)
+    {
+        $pictures = Picture::all();
+
+        foreach($pictures as $picture){
+            $picture['img'] = 'http://192.168.1.95:8000' . $picture['img'];
+        }
+
+        return response()->json($pictures);
+    }
+
     //POST /api/restify/pictures Fichero JSON con los datos
     /*
     FICHERO JSON EJEMPLO
@@ -50,15 +61,15 @@ class PictureRepository extends Repository
     {
         $data = $request->all();
         $pictures = [];
-        $basePath = "http://192.168.1.95:8000/images/announce/";
+        //$basePath = "http://192.168.1.95:8000/images/announce/";
+        $basePath = "/images/announce/";
         //$defaultPicturePath = "http://192.168.1.95:8000/images/announce/announce_default.jpg";
         
         $ID_announce = $data['pictures'][0]['ID_announce'];
-        $announce = Announce::findOrFail($ID_announce);
-        $picturesCount = $announce->pictures->count();
+        Picture::where('ID_announce', $ID_announce)->delete();
 
         foreach ($data['pictures'] as $i => $pictureData) {
-            $picNumber = $picturesCount + $i + 1;
+            $picNumber = $i + 1;
             $picName = "announce" . $pictureData['ID_announce'] . "_picture" . $picNumber . ".jpg";
             $picPath = $basePath . $picName;
             

@@ -24,6 +24,9 @@ class User extends Authenticatable
         'nickname',
         'email',
         'password',
+        'phone_number',
+        'profile_picture',
+        'profile_type'
     ];
 
     /**
