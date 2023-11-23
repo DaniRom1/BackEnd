@@ -132,8 +132,21 @@ class AnnounceRepository extends Repository
             $announces->whereIn('ID_location', $ID_location);
         }
 
-        $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(10);
-
+        $orderby = $request->orderby;
+        switch ($orderby) {
+            case 1: //Precio ascendente
+                $announces = $announces->orderBy('announces.price', 'asc')->paginate(10);
+                break;
+            case 2: // Precio descendente
+                $announces = $announces->orderBy('announces.price', 'desc')->paginate(10);
+                break;
+            case 3: // Fecha ascendente
+                $announces = $announces->orderBy('announces.ID_announce', 'asc')->paginate(10);
+                break;
+            default: // Fecha descendente
+                $announces = $announces->orderBy('announces.ID_announce', 'desc')->paginate(10);
+        }
+        
         foreach ($announces as $announce) {
             $announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
         }
