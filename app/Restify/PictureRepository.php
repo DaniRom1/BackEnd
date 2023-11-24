@@ -6,6 +6,7 @@ use App\Models\Picture;
 use App\Models\Announce;
 use Illuminate\Http\Request;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PictureRepository extends Repository
 {
@@ -20,16 +21,7 @@ class PictureRepository extends Repository
         ];
     }
 
-    public function index(Request $request)
-    {
-        $pictures = Picture::all();
 
-        foreach($pictures as $picture){
-            $picture['img'] = 'http://192.168.1.95:8000' . $picture['img'];
-        }
-
-        return response()->json($pictures);
-    }
 
     //POST /api/restify/pictures Fichero JSON con los datos
     /*
@@ -54,37 +46,42 @@ class PictureRepository extends Repository
                 "ID_announce": 1
             }
         ]
-    }
+    }*/
 
-    */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $data = $request->all();
-        $pictures = [];
-        //$basePath = "http://192.168.1.95:8000/images/announce/";
         $basePath = "/images/announce/";
-        //$defaultPicturePath = "http://192.168.1.95:8000/images/announce/announce_default.jpg";
-        
-        $ID_announce = $data['pictures'][0]['ID_announce'];
+        $ID_announce = $data['ID_announce'];
+
+        $picturePaths = Picture::where('ID_announce', $ID_announce)->pluck('img')->toArray();
+
         Picture::where('ID_announce', $ID_announce)->delete();
 
-        foreach ($data['pictures'] as $i => $pictureData) {
+        $pictures = $request->file('picture');
+        
+        foreach ($picturePaths as $picturePath) {
+            $fullPath = public_path($picturePath);
+    
+            // Verificar si el archivo existe antes de intentar eliminarlo
+            if (file_exists($fullPath)) {
+                unlink($fullPath);
+            }
+        }
+        
+        foreach($pictures as $i => $picture){
             $picNumber = $i + 1;
-            $picName = "announce" . $pictureData['ID_announce'] . "_picture" . $picNumber . ".jpg";
+            $picName = "announce" . $ID_announce . "_picture" . $picNumber . ".jpg";
             $picPath = $basePath . $picName;
-            
-            //Guardar imagen en el directorio
-            //$image = $request->file('img');
-            //$image->storeAs($basePath, $picName);
-            
+
+            $picture->move(public_path($basePath), $picName);
+
             $picture = Picture::create([
                 'img' => $picPath,
-                //'img' => $defaultPicturePath,
-                'ID_announce' => $pictureData['ID_announce'],
+                'ID_announce' => $ID_announce,
             ]);
-            $pictures[] = $picture;
         }
-        return response()->json($pictures);
+
+        return response()->json($picNumber);
     }
 
     //DELETE: /api/restify/pictures/ID_picture No funciona con JSON

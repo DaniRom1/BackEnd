@@ -52,6 +52,11 @@ class Announce extends Model
             ->where('ID_announce', $this->ID_announce)
             ->exists();
     }
+    
+    public function ableToEdit($ID_user)
+    {
+        return $this->ID_user == $ID_user;
+    }
 
     public static function required()
     {

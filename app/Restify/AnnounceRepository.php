@@ -51,15 +51,10 @@ class AnnounceRepository extends Repository
         //$ID_user = $request->ID_user;
         $ID_user = auth()->user()->ID_user;
 
-        $announces = Announce::with(Announce::required())
-            ->selectRaw('announces.*, CASE WHEN favs."ID_announce" IS NOT NULL THEN true ELSE false END AS "isFavourite"')
-            ->leftJoin('favs', function ($join) use ($ID_user) {
-                $join->on('announces.ID_announce', '=', 'favs.ID_announce')
-                    ->where('favs.ID_user', $ID_user);
-            });
+        $announces = Announce::with(Announce::required());
 
         
-
+        
         $ID_userFilter = $request->ID_user;
         if ($ID_userFilter != null)
             $announces->where('announces.ID_user', $ID_userFilter);
@@ -148,7 +143,9 @@ class AnnounceRepository extends Repository
         }
         
         foreach ($announces as $announce) {
-            $announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
+            $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
+            //$announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
+            $announce->setAttribute('ableToEdit', $announce->ableToEdit($ID_user));
         }
 
         return response()->json($announces);
@@ -160,7 +157,8 @@ class AnnounceRepository extends Repository
         $announce = Announce::with(Announce::required())->findOrFail($ID_announce);
         $ID_user = auth()->user()->ID_user;
         $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
-        $announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
+        //$announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
+        $announce->setAttribute('ableToEdit', $announce->ableToEdit($ID_user));
 
         return response()->json($announce);
     }
