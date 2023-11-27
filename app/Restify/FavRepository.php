@@ -3,6 +3,7 @@
 namespace App\Restify;
 
 use App\Models\Fav;
+use App\Models\Announce;
 use Illuminate\Http\Request;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
@@ -29,10 +30,18 @@ class FavRepository extends Repository
             $favs = Fav::where('ID_user', $ID_user)
                 ->where('favs.ID_announce', $ID_announce)
                 ->pluck('ID_fav');
-        } else{
+        } else {
             $favs = Fav::with(Fav::required())
-            ->where('ID_user', $ID_user)
-            ->paginate(10);
+                ->where('ID_user', $ID_user)
+                ->orderBy('ID_fav', 'desc')
+                ->paginate(10);
+
+            foreach ($favs as $fav) {
+                $announce = $fav->announce;
+                $fav["announce"]->setAttribute('isFavourite', $announce->isFavourite($ID_user));
+                $fav["announce"]->setAttribute('ableToEdit', $announce->ableToEdit($ID_user));
+            }
+
         }
 
         return response()->json($favs);

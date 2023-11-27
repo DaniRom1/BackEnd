@@ -33,7 +33,7 @@ class UserRepository extends Repository
     {
         $userData = $request->all();
         $ID_user = auth()->user()->ID_user;
-        $basePath = "http://192.168.1.95:8000/images/user/";
+        $basePath = "/images/user/";
         $picName = "profile_picture_" . $ID_user . "jpg";
 
         if (isset($userData['profile_picture'])) {
@@ -58,6 +58,12 @@ class UserRepository extends Repository
         $user = User::with(User::required())->findOrFail($ID_user);
         foreach ($user->announces as $announce) {
             $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
+            $announce->setAttribute('ableToEdit', $announce->ableToEdit($ID_user));
+        }
+        foreach ($user->favs as $fav) {
+            $announce = $fav->announce;
+            $announce->setAttribute('isFavourite', $announce->isFavourite($ID_user));
+            $announce->setAttribute('ableToEdit', $announce->ableToEdit($ID_user));
         }
 
         return response()->json($user);
