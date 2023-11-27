@@ -53,8 +53,6 @@ class AnnounceRepository extends Repository
 
         $announces = Announce::with(Announce::required());
 
-        
-        
         $ID_userFilter = $request->ID_user;
         if ($ID_userFilter != null)
             $announces->where('announces.ID_user', $ID_userFilter);
@@ -147,7 +145,7 @@ class AnnounceRepository extends Repository
             //$announce->setAttribute('ableToEdit', $ID_user == $announce->ID_user ? true : false);
             $announce->setAttribute('ableToEdit', $announce->ableToEdit($ID_user));
         }
-
+        
         return response()->json($announces);
     }
 
