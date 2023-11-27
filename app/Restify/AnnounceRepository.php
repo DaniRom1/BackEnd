@@ -4,6 +4,7 @@ namespace App\Restify;
 
 use App\Models\Announce;
 use App\Models\Location;
+use App\Models\Picture;
 use Illuminate\Http\Request;
 use Binaryk\LaravelRestify\Filters\SearchableFilter;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
@@ -173,6 +174,14 @@ class AnnounceRepository extends Repository
     //DELETE: /api/restify/announces/ID_announce No funciona con JSON
     public function destroy(Request $request, $ID_announce)
     {
+        $picturePaths = Picture::where('ID_announce', $ID_announce)->pluck('img')->toArray();
+        foreach ($picturePaths as $picturePath) {
+            $fullPath = public_path($picturePath);
+            if (file_exists($fullPath)) {
+                unlink($fullPath);
+            }
+        }
+
         Announce::destroy($ID_announce);
         $response = ["response" => 'El anuncio ' . $ID_announce . ' fue eliminado'];
         return response()->json($response);

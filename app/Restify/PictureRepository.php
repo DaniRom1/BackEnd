@@ -62,7 +62,6 @@ class PictureRepository extends Repository
         foreach ($picturePaths as $picturePath) {
             $fullPath = public_path($picturePath);
     
-            // Verificar si el archivo existe antes de intentar eliminarlo
             if (file_exists($fullPath)) {
                 unlink($fullPath);
             }
