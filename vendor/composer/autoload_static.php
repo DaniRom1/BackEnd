@@ -19,17 +19,17 @@ class ComposerStaticInitaa322c53454393ed775cfe4807d54a50
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '3bd81c9b8fcc150b69d8b63b4d2ccf23' => __DIR__ . '/..' . '/spatie/flare-client-php/src/helpers.php',
         '35a6ad97d21e794e7e22a17d806652e4' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Functions.php',
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '47e1160838b5e5a10346ac4084b58c23' => __DIR__ . '/..' . '/laravel/prompts/src/helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
         'ed33d19cba977f2a7e321f120d94a872' => __DIR__ . '/..' . '/spatie/once/src/functions.php',
         'b183ebb04c21c61b2650ec7a296f766e' => __DIR__ . '/..' . '/binaryk/laravel-restify/src/helpers.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '265b4faa2b3a9766332744949e83bf97' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections/helpers.php',
         'c7a3c339e7e14b60e06a2d7fcce9476b' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Events/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
@@ -148,6 +148,9 @@ class ComposerStaticInitaa322c53454393ed775cfe4807d54a50
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
             'GrahamCampbell\\ResultType\\' => 26,
+            'GetStream\\Unit\\' => 15,
+            'GetStream\\Integration\\' => 22,
+            'GetStram\\' => 9,
         ),
         'F' => 
         array (
@@ -488,6 +491,18 @@ class ComposerStaticInitaa322c53454393ed775cfe4807d54a50
         array (
             0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
         ),
+        'GetStream\\Unit\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/get-stream/stream-chat/tests/unit',
+        ),
+        'GetStream\\Integration\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/get-stream/stream-chat/tests/integration',
+        ),
+        'GetStram\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/get-stream/stream-chat/src',
+        ),
         'Fruitcake\\Cors\\' => 
         array (
             0 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
@@ -569,6 +584,16 @@ class ComposerStaticInitaa322c53454393ed775cfe4807d54a50
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'G' => 
+        array (
+            'GetStream\\StreamChat' => 
+            array (
+                0 => __DIR__ . '/..' . '/get-stream/stream-chat/lib',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -582,6 +607,7 @@ class ComposerStaticInitaa322c53454393ed775cfe4807d54a50
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
+        'App\\Http\\Middleware\\Cors' => __DIR__ . '/../..' . '/app/Http/Middleware/Cors.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\PreventRequestsDuringMaintenance' => __DIR__ . '/../..' . '/app/Http/Middleware/PreventRequestsDuringMaintenance.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
@@ -2020,6 +2046,14 @@ class ComposerStaticInitaa322c53454393ed775cfe4807d54a50
         'Faker\\ValidGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/ValidGenerator.php',
         'Fruitcake\\Cors\\CorsService' => __DIR__ . '/..' . '/fruitcake/php-cors/src/CorsService.php',
         'Fruitcake\\Cors\\Exceptions\\InvalidOptionException' => __DIR__ . '/..' . '/fruitcake/php-cors/src/Exceptions/InvalidOptionException.php',
+        'GetStream\\Integration\\IntegrationTest' => __DIR__ . '/..' . '/get-stream/stream-chat/tests/integration/IntegrationTest.php',
+        'GetStream\\StreamChat\\Channel' => __DIR__ . '/..' . '/get-stream/stream-chat/lib/GetStream/StreamChat/Channel.php',
+        'GetStream\\StreamChat\\Client' => __DIR__ . '/..' . '/get-stream/stream-chat/lib/GetStream/StreamChat/Client.php',
+        'GetStream\\StreamChat\\JwtHandler' => __DIR__ . '/..' . '/get-stream/stream-chat/lib/GetStream/StreamChat/JwtHandler.php',
+        'GetStream\\StreamChat\\StreamException' => __DIR__ . '/..' . '/get-stream/stream-chat/lib/GetStream/StreamChat/StreamException.php',
+        'GetStream\\StreamChat\\StreamRateLimit' => __DIR__ . '/..' . '/get-stream/stream-chat/lib/GetStream/StreamChat/StreamRateLimit.php',
+        'GetStream\\StreamChat\\StreamResponse' => __DIR__ . '/..' . '/get-stream/stream-chat/lib/GetStream/StreamChat/StreamResponse.php',
+        'GetStream\\Unit\\ClientTest' => __DIR__ . '/..' . '/get-stream/stream-chat/tests/unit/ClientTest.php',
         'GrahamCampbell\\ResultType\\Error' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Error.php',
         'GrahamCampbell\\ResultType\\Result' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Result.php',
         'GrahamCampbell\\ResultType\\Success' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Success.php',
@@ -7152,6 +7186,7 @@ class ComposerStaticInitaa322c53454393ed775cfe4807d54a50
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitaa322c53454393ed775cfe4807d54a50::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitaa322c53454393ed775cfe4807d54a50::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitaa322c53454393ed775cfe4807d54a50::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitaa322c53454393ed775cfe4807d54a50::$classMap;
 
         }, null, ClassLoader::class);
