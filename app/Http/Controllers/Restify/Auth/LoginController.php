@@ -30,7 +30,8 @@ class LoginController extends Controller
         /*STREAM CHAT*/
         $STREAM_API_KEY = 'qts5narahjsz';
         $STREAM_API_SECRET = '2b7uguhrwkt6urcrnwkwwx5tzygrt9skjnm2pzjxekgw66ybn533e47xyv5mjnz9';
-        $ID_user = User::where('email', $request->input('email'))->get('ID_user');
+        $ID_user = User::where('email', $request->input('email'))->pluck('ID_user');
+        $ID_user = str_replace(['[', ']'], '', $ID_user);
         $server_client = new Client($STREAM_API_KEY, $STREAM_API_SECRET);
         $token = $server_client->createToken($ID_user);
         
