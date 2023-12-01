@@ -202,7 +202,9 @@ class AnnounceRepository extends Repository
 
         $announce = Announce::create($data);
 
-        return response()->json($announce);
+        return response()->json([
+            'ID_announce' => $announce['ID_announce']
+        ]);
     }
 
 }
