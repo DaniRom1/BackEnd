@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use GetStream\StreamChat\Client;
 
 class LoginController extends Controller
 {
@@ -26,8 +27,17 @@ class LoginController extends Controller
             abort(401, 'Invalid credentials.');
         }
 
+        /*STREAM CHAT*/
+        $STREAM_API_KEY = 'qts5narahjsz';
+        $STREAM_API_SECRET = '2b7uguhrwkt6urcrnwkwwx5tzygrt9skjnm2pzjxekgw66ybn533e47xyv5mjnz9';
+        $ID_user = User::where('email', $request->input('email'))->get('ID_user');
+        $server_client = new Client($STREAM_API_KEY, $STREAM_API_SECRET);
+        $token = $server_client->createToken($ID_user);
+        
+
         return rest($user)->indexMeta([
             'token' => $user->createToken('login')->plainTextToken,
+            'chatToken' => $token,
         ]);
     }
 
