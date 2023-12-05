@@ -13,6 +13,7 @@ class Picture extends Model
     protected $primaryKey = 'ID_picture';
 
     protected $fillable = [
+        'ID_picture',
         'img',
         'ID_announce',
     ];
