@@ -28,8 +28,10 @@ class LoginController extends Controller
         }
 
         /*STREAM CHAT*/
-        $STREAM_API_KEY = 'qts5narahjsz';
-        $STREAM_API_SECRET = '2b7uguhrwkt6urcrnwkwwx5tzygrt9skjnm2pzjxekgw66ybn533e47xyv5mjnz9';
+        //$STREAM_API_KEY = 'qts5narahjsz';
+        //$STREAM_API_SECRET = '2b7uguhrwkt6urcrnwkwwx5tzygrt9skjnm2pzjxekgw66ybn533e47xyv5mjnz9';
+        $STREAM_API_KEY = 'xt9tx3pw5urj';
+        $STREAM_API_SECRET = '2mr42s3zccz5cwzb3dbzpdx5t7fbk2tmmdvunwegm977h8ujevxwbk9gtjkqmgqd';
         $ID_user = User::where('email', $request->input('email'))->pluck('ID_user');
         $ID_user = str_replace(['[', ']'], '', $ID_user);
         $server_client = new Client($STREAM_API_KEY, $STREAM_API_SECRET);
