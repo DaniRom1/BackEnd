@@ -43,7 +43,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->input('password')),
             'phone_number' => $request->input('phone_number'),
             'profile_picture' => $profile_picture,
-            'profile_type' => 'Particular',
+            'profile_type' => $request->input('profile_type'),
         ]);
 
         return rest($user)->indexMeta([
